@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import { useState } from "react";
+
+export default function App() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [err, setErr] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (username === "user" && password === "password") {
+      setErr("");
+      setIsSubmitted(true);
+    } else {
+      setErr("Invalid username or password");
+      setIsSubmitted(false);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Login Page</h1>
+      {isSubmitted ? (
+        <div>
+          <p> Welcome, {username}!</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          {err && <p className="err">{err}</p>}
+          <div>
+            <label htmlFor="username"> Username: </label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password"> Password: </label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
-
-export default App;
